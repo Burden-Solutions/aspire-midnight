@@ -1,0 +1,57 @@
+{% comment %}
+  Section: campaign-banner
+  Full-width promotional banner with large background text, headline, and CTAs.
+{% endcomment %}
+
+<div class="campaign-banner">
+  <div class="pf campaign-banner__bg-text" aria-hidden="true">
+    {{ section.settings.bg_word | default: 'MIDNIGHT' }}
+  </div>
+
+  <div class="campaign-banner__inner">
+    <div class="campaign-banner__eyebrow">
+      {{ section.settings.eyebrow | default: 'New Season' }}
+    </div>
+
+    <h2 class="pf campaign-banner__title">
+      {{ section.settings.title_line1 | default: 'MIDNIGHT' }}<br>
+      <em>{{ section.settings.title_line2 | default: 'Collection' }}</em>
+    </h2>
+
+    <p class="campaign-banner__sub">
+      {{ section.settings.subheading | default: 'Dramatic matte black finishes for the space that makes a statement. Engineered in Australia. Built to last a lifetime.' }}
+    </p>
+
+    <div class="campaign-banner__cta">
+      <a href="{{ section.settings.primary_btn_url | default: routes.all_products_collection_url }}"
+         class="btn btn--primary">
+        {{ section.settings.primary_btn_label | default: 'Shop the Range' }}
+      </a>
+      <a href="{{ section.settings.secondary_btn_url | default: '#' }}"
+         class="btn btn--outline">
+        {{ section.settings.secondary_btn_label | default: 'View Lookbook' }}
+      </a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Campaign Banner",
+  "tag": "div",
+  "settings": [
+    { "type": "text",     "id": "bg_word",            "label": "Large background word",   "default": "MIDNIGHT" },
+    { "type": "text",     "id": "eyebrow",            "label": "Eyebrow label",           "default": "New Season" },
+    { "type": "text",     "id": "title_line1",        "label": "Title — line 1",          "default": "MIDNIGHT" },
+    { "type": "text",     "id": "title_line2",        "label": "Title — line 2 (italic)", "default": "Collection" },
+    { "type": "textarea", "id": "subheading",         "label": "Subheading",              "default": "Dramatic matte black finishes for the space that makes a statement. Engineered in Australia. Built to last a lifetime." },
+    { "type": "text",     "id": "primary_btn_label",  "label": "Primary button text",     "default": "Shop the Range" },
+    { "type": "url",      "id": "primary_btn_url",    "label": "Primary button URL" },
+    { "type": "text",     "id": "secondary_btn_label","label": "Secondary button text",   "default": "View Lookbook" },
+    { "type": "url",      "id": "secondary_btn_url",  "label": "Secondary button URL" }
+  ],
+  "presets": [
+    { "name": "Campaign Banner" }
+  ]
+}
+{% endschema %}

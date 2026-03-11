@@ -1,0 +1,22 @@
+{
+  "general": {
+    "search": {
+      "placeholder": "Search products…"
+    },
+    "cart": {
+      "title": "Your Cart",
+      "empty": "Your cart is empty."
+    }
+  },
+  "products": {
+    "add_to_cart": "Add to Cart",
+    "sold_out": "Sold Out",
+    "unavailable": "Unavailable",
+    "wishlist": "Add to Wishlist"
+  },
+  "newsletter": {
+    "subscribe": "Subscribe",
+    "placeholder": "Enter your email address",
+    "success": "Thanks for subscribing!"
+  }
+}

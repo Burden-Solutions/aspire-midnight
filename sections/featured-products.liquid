@@ -1,0 +1,150 @@
+{% comment %}
+  Section: featured-products
+  Renders a curated grid of products from a chosen collection.
+  Falls back to placeholder cards if the collection is empty.
+{% endcomment %}
+
+{%- liquid
+  assign collection = collections[section.settings.collection]
+  assign product_limit = section.settings.product_limit | default: 6
+-%}
+
+<section class="products-section">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">{{ section.settings.eyebrow | default: 'Top Sellers' }}</div>
+      <h2 class="pf section-title">
+        {{ section.settings.title_line1 | default: 'Most Wanted' }}<br>
+        <em>{{ section.settings.title_line2 | default: 'Products' }}</em>
+      </h2>
+    </div>
+    <a
+      href="{{ collection.url | default: routes.all_products_collection_url }}"
+      class="section-link"
+    >
+      {{ section.settings.view_all_label | default: 'View All Products →' }}
+    </a>
+  </div>
+
+  <div class="product-grid">
+    {%- if collection != blank and collection.products.size > 0 -%}
+      {%- for product in collection.products limit: product_limit -%}
+        {%- assign badge = '' -%}
+        {%- if product.tags contains 'bestseller' -%}{%- assign badge = 'BESTSELLER' -%}{%- endif -%}
+        {%- if product.tags contains 'new' -%}{%- assign badge = 'NEW' -%}{%- endif -%}
+
+        <div class="prod-card">
+          <div class="prod-card__media">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 600 | image_tag:
+                   alt: product.featured_image.alt | default: product.title,
+                   loading: 'lazy',
+                   widths: '300, 450, 600' }}
+            {%- else -%}
+              <div class="img-placeholder">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+            {%- endif -%}
+
+            <div class="prod-card__tint" aria-hidden="true"></div>
+
+            {%- if badge != '' -%}
+              <div class="prod-card__badge">{{ badge }}</div>
+            {%- endif -%}
+
+            <button class="prod-card__wish" aria-label="Add to wishlist">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+
+            <button
+              class="prod-card__add"
+              data-product-id="{{ product.variants.first.id }}"
+              onclick="
+                fetch('/cart/add.js', {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({id: {{ product.variants.first.id }}, quantity: 1})
+                }).then(function() { window.location = '{{ routes.cart_url }}'; })
+              "
+            >
+              Add to Cart
+            </button>
+          </div>
+
+          <a href="{{ product.url }}" class="prod-card__info">
+            <div class="prod-card__row">
+              <div>
+                <div class="prod-card__name">{{ product.title }}</div>
+                <div class="prod-card__finish">{{ product.vendor }}</div>
+              </div>
+              <div class="pf prod-card__price">{{ product.price | money }}</div>
+            </div>
+            {%- render 'stars', rating: product.metafields.reviews.rating.value -%}
+          </a>
+        </div>
+      {%- endfor -%}
+
+    {%- else -%}
+      {%- comment -%} Placeholder cards for theme editor preview {%- endcomment -%}
+      {%- assign placeholder_products = 'Within 750mm Double Towel Rail,Within 600mm Double Towel Rail,Within Robe Hook,Within Toilet Roll Holder,Wall Mounted Basin Mixer,Round Ceiling Shower Arm' | split: ',' -%}
+      {%- assign placeholder_prices   = '$119.90,$100.10,$33.00,$49.00,$245.00,$88.00' | split: ',' -%}
+      {%- assign placeholder_finishes = 'Matte Black,Matte Black,Matte Black,Matte Black,Brushed Brass,Brushed Nickel' | split: ',' -%}
+      {%- assign placeholder_badges   = 'BESTSELLER,,NEW,,,,' | split: ',' -%}
+
+      {%- for i in (0..5) -%}
+        <div class="prod-card">
+          <div class="prod-card__media">
+            <div class="img-placeholder">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+            <div class="prod-card__tint" aria-hidden="true"></div>
+            {%- if placeholder_badges[i] != '' -%}
+              <div class="prod-card__badge">{{ placeholder_badges[i] }}</div>
+            {%- endif -%}
+            <button class="prod-card__wish" aria-label="Add to wishlist">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+            <button class="prod-card__add">Add to Cart</button>
+          </div>
+          <div class="prod-card__info">
+            <div class="prod-card__row">
+              <div>
+                <div class="prod-card__name">{{ placeholder_products[i] }}</div>
+                <div class="prod-card__finish">{{ placeholder_finishes[i] }}</div>
+              </div>
+              <div class="pf prod-card__price">{{ placeholder_prices[i] }}</div>
+            </div>
+            {%- render 'stars', rating: 5 -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "div",
+  "settings": [
+    { "type": "text",       "id": "eyebrow",        "label": "Eyebrow label",      "default": "Top Sellers" },
+    { "type": "text",       "id": "title_line1",    "label": "Title — line 1",     "default": "Most Wanted" },
+    { "type": "text",       "id": "title_line2",    "label": "Title — line 2 (italic)", "default": "Products" },
+    { "type": "text",       "id": "view_all_label", "label": "View all link text",  "default": "View All Products →" },
+    { "type": "collection", "id": "collection",     "label": "Collection" },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Number of products",
+      "min": 2, "max": 12, "step": 1, "default": 6
+    }
+  ],
+  "presets": [
+    { "name": "Featured Products" }
+  ]
+}
+{% endschema %}

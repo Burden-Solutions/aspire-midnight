@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "stat-1": {
+          "type": "stat",
+          "settings": {
+            "value": "12,000+",
+            "label": "Renovations"
+          }
+        },
+        "stat-2": {
+          "type": "stat",
+          "settings": {
+            "value": "4.9 / 5",
+            "label": "Google Rating"
+          }
+        },
+        "stat-3": {
+          "type": "stat",
+          "settings": {
+            "value": "AUS",
+            "label": "Ships Nationwide"
+          }
+        }
+      },
+      "block_order": ["stat-1", "stat-2", "stat-3"],
+      "settings": {}
+    },
+    "marquee-1": {
+      "type": "marquee-divider",
+      "settings": {}
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {}
+    },
+    "finishes": {
+      "type": "finishes",
+      "blocks": {
+        "finish-1": { "type": "finish", "settings": { "name": "Matte Black",    "desc": "Bold. Dramatic. Timeless.",    "color": "#111010" } },
+        "finish-2": { "type": "finish", "settings": { "name": "Brushed Brass",  "desc": "Warm. Luxurious. Striking.",   "color": "#C9A84C" } },
+        "finish-3": { "type": "finish", "settings": { "name": "Brushed Nickel", "desc": "Cool. Modern. Refined.",       "color": "#9BA4AE" } },
+        "finish-4": { "type": "finish", "settings": { "name": "Chrome",         "desc": "Classic. Clean. Enduring.",    "color": "#D8DCE0" } }
+      },
+      "block_order": ["finish-1", "finish-2", "finish-3", "finish-4"],
+      "settings": {}
+    },
+    "campaign-banner": {
+      "type": "campaign-banner",
+      "settings": {}
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "review-1": { "type": "review", "settings": { "name": "Sarah M.", "location": "Sydney, NSW",    "text": "Fitted our entire renovation through Aspire. The matte black range is stunning and quality is exceptional. Delivery was fast and stress-free." } },
+        "review-2": { "type": "review", "settings": { "name": "James T.", "location": "Melbourne, VIC", "text": "Used Aspire for kitchen and both bathrooms. The brushed brass finishes look incredible — so many compliments. Highly recommend to anyone renovating!" } },
+        "review-3": { "type": "review", "settings": { "name": "Claire R.","location": "Brisbane, QLD",  "text": "The design team helped pick the perfect tapware. Incredible service and the products are exactly as described. Five stars all round." } }
+      },
+      "block_order": ["review-1", "review-2", "review-3"],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "marquee-1",
+    "featured-products",
+    "finishes",
+    "campaign-banner",
+    "testimonials",
+    "newsletter"
+  ]
+}

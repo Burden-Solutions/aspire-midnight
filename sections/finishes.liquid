@@ -1,0 +1,111 @@
+{% comment %}
+  Section: finishes
+  Interactive finish-selector grid. Each finish is a block with a swatch colour,
+  name, description, and optional collection link.
+{% endcomment %}
+
+<section class="finishes-section">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">{{ section.settings.eyebrow | default: 'Explore' }}</div>
+      <h2 class="pf section-title">
+        {{ section.settings.title_line1 | default: 'Choose Your' }}<br>
+        <em>{{ section.settings.title_line2 | default: 'Finish' }}</em>
+      </h2>
+    </div>
+  </div>
+
+  <div class="finishes-grid">
+    {%- for block in section.blocks -%}
+      <div
+        class="fin-card{% if forloop.first %} active{% endif %}"
+        {{ block.shopify_attributes }}
+        role="button"
+        tabindex="0"
+        aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+        onclick="
+          document.querySelectorAll('.fin-card').forEach(function(c){
+            c.classList.remove('active');
+            c.setAttribute('aria-pressed','false');
+          });
+          this.classList.add('active');
+          this.setAttribute('aria-pressed','true');
+        "
+        onkeydown="if(event.key==='Enter'||event.key===' '){this.click();}"
+      >
+        <div
+          class="fin-card__swatch"
+          style="background-color: {{ block.settings.color | default: '#111010' }}"
+          aria-hidden="true"
+        ></div>
+
+        <div class="fin-card__info">
+          <div class="fin-card__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+          <div class="pf fin-card__name">{{ block.settings.name }}</div>
+          <div class="fin-card__desc">{{ block.settings.desc }}</div>
+        </div>
+
+        <div class="fin-card__check" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3">
+            <path d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+      </div>
+    {%- else -%}
+      {%- comment -%} Default placeholder blocks {%- endcomment -%}
+      {%- assign def_names  = 'Matte Black,Brushed Brass,Brushed Nickel,Chrome' | split: ',' -%}
+      {%- assign def_descs  = 'Bold. Dramatic. Timeless.,Warm. Luxurious. Striking.,Cool. Modern. Refined.,Classic. Clean. Enduring.' | split: ',' -%}
+      {%- assign def_colors = '#111010,#C9A84C,#9BA4AE,#D8DCE0' | split: ',' -%}
+      {%- for i in (0..3) -%}
+        <div class="fin-card{% if i == 0 %} active{% endif %}">
+          <div class="fin-card__swatch" style="background-color:{{ def_colors[i] }}"></div>
+          <div class="fin-card__info">
+            <div class="fin-card__num">0{{ forloop.index }}</div>
+            <div class="pf fin-card__name">{{ def_names[i] }}</div>
+            <div class="fin-card__desc">{{ def_descs[i] }}</div>
+          </div>
+          <div class="fin-card__check" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3">
+              <path d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Finishes",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow",     "label": "Eyebrow label", "default": "Explore" },
+    { "type": "text", "id": "title_line1", "label": "Title — line 1", "default": "Choose Your" },
+    { "type": "text", "id": "title_line2", "label": "Title — line 2 (italic)", "default": "Finish" }
+  ],
+  "blocks": [
+    {
+      "type": "finish",
+      "name": "Finish",
+      "settings": [
+        { "type": "text",  "id": "name",  "label": "Finish name",        "default": "Matte Black" },
+        { "type": "text",  "id": "desc",  "label": "Tagline",            "default": "Bold. Dramatic. Timeless." },
+        { "type": "color", "id": "color", "label": "Swatch colour",      "default": "#111010" },
+        { "type": "url",   "id": "url",   "label": "Link to collection (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Finishes",
+      "blocks": [
+        { "type": "finish", "settings": { "name": "Matte Black",    "desc": "Bold. Dramatic. Timeless.",    "color": "#111010" } },
+        { "type": "finish", "settings": { "name": "Brushed Brass",  "desc": "Warm. Luxurious. Striking.",   "color": "#C9A84C" } },
+        { "type": "finish", "settings": { "name": "Brushed Nickel", "desc": "Cool. Modern. Refined.",       "color": "#9BA4AE" } },
+        { "type": "finish", "settings": { "name": "Chrome",         "desc": "Classic. Clean. Enduring.",    "color": "#D8DCE0" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

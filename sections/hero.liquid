@@ -1,0 +1,129 @@
+{% comment %}
+  Section: hero
+  Full-bleed two-column hero with headline, CTA buttons, stats, and an image panel.
+{% endcomment %}
+
+<section class="hero">
+  {%- comment -%} Left: text content {%- endcomment -%}
+  <div class="hero__content">
+    <div>
+      <div class="hero__eyebrow fu fu1">
+        <span class="hero__eyebrow-label">{{ section.settings.eyebrow | default: '2026 Collection' }}</span>
+        <span class="hero__eyebrow-line" aria-hidden="true"></span>
+      </div>
+
+      <h1 class="pf hero__heading fu fu2">
+        <span class="line1">{{ section.settings.heading_line1 | default: 'ELEVATE' }}</span>
+        <span class="line2">{{ section.settings.heading_line2 | default: 'YOUR' }}</span>
+        <span class="line3">{{ section.settings.heading_line3 | default: 'SPACE.' }}</span>
+      </h1>
+
+      <p class="hero__sub fu fu3">
+        {{ section.settings.subheading | default: 'Premium tapware for bathrooms, kitchens, and laundries. Curated for quality. Backed by Australia\'s best service.' }}
+      </p>
+
+      <div class="hero__cta fu fu4">
+        <a href="{{ section.settings.primary_btn_url | default: routes.all_products_collection_url }}"
+           class="btn btn--primary">
+          {{ section.settings.primary_btn_label | default: 'Shop Now' }}
+        </a>
+        <a href="{{ section.settings.secondary_btn_url | default: '#' }}"
+           class="btn btn--outline">
+          {{ section.settings.secondary_btn_label | default: 'View Collections' }}
+        </a>
+      </div>
+    </div>
+
+    {%- comment -%} Stats strip {%- endcomment -%}
+    <div class="hero__stats">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'stat' -%}
+          <div class="hero__stat" {{ block.shopify_attributes }}>
+            <div class="pf hero__stat-value">{{ block.settings.value }}</div>
+            <div class="hero__stat-label">{{ block.settings.label }}</div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} Right: image panel {%- endcomment -%}
+  <div class="hero__media">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 1200 | image_tag:
+           class: 'hero__media-inner',
+           alt: section.settings.image.alt | default: section.settings.badge_name,
+           loading: 'eager',
+           fetchpriority: 'high' }}
+    {%- else -%}
+      <div class="img-placeholder hero__media-inner" style="min-height:480px">
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'img-placeholder' }}
+        <span class="img-placeholder__label">Hero Lifestyle Photography</span>
+      </div>
+    {%- endif -%}
+
+    <div class="hero__badge">
+      <div class="hero__badge-label">{{ section.settings.badge_label | default: 'Now Trending' }}</div>
+      <div class="hero__badge-name">{{ section.settings.badge_name  | default: 'Midnight Matte Black' }}</div>
+    </div>
+
+    <div class="hero__overlay">
+      <div>
+        <div class="hero__overlay-label">{{ section.settings.overlay_label | default: 'Featured Range' }}</div>
+        <div class="pf hero__overlay-title">{{ section.settings.overlay_title | default: 'Within Collection' }}</div>
+      </div>
+      <a href="{{ section.settings.overlay_btn_url | default: '#' }}" class="btn btn--primary btn--sm">
+        {{ section.settings.overlay_btn_label | default: 'Shop Now →' }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "div",
+  "settings": [
+    { "type": "header", "content": "Text" },
+    { "type": "text",  "id": "eyebrow",          "label": "Eyebrow label",       "default": "2026 Collection" },
+    { "type": "text",  "id": "heading_line1",     "label": "Heading — line 1",    "default": "ELEVATE" },
+    { "type": "text",  "id": "heading_line2",     "label": "Heading — line 2",    "default": "YOUR" },
+    { "type": "text",  "id": "heading_line3",     "label": "Heading — line 3",    "default": "SPACE." },
+    { "type": "textarea","id": "subheading",      "label": "Subheading",          "default": "Premium tapware for bathrooms, kitchens, and laundries. Curated for quality. Backed by Australia's best service." },
+    { "type": "header", "content": "Primary button" },
+    { "type": "text",  "id": "primary_btn_label", "label": "Label",               "default": "Shop Now" },
+    { "type": "url",   "id": "primary_btn_url",   "label": "URL" },
+    { "type": "header", "content": "Secondary button" },
+    { "type": "text",  "id": "secondary_btn_label","label": "Label",              "default": "View Collections" },
+    { "type": "url",   "id": "secondary_btn_url", "label": "URL" },
+    { "type": "header", "content": "Image panel" },
+    { "type": "image_picker", "id": "image",      "label": "Hero image" },
+    { "type": "text",  "id": "badge_label",       "label": "Badge label",         "default": "Now Trending" },
+    { "type": "text",  "id": "badge_name",        "label": "Badge name",          "default": "Midnight Matte Black" },
+    { "type": "text",  "id": "overlay_label",     "label": "Overlay label",       "default": "Featured Range" },
+    { "type": "text",  "id": "overlay_title",     "label": "Overlay title",       "default": "Within Collection" },
+    { "type": "text",  "id": "overlay_btn_label", "label": "Overlay button text", "default": "Shop Now →" },
+    { "type": "url",   "id": "overlay_btn_url",   "label": "Overlay button URL" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "12,000+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Renovations" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "12,000+", "label": "Renovations" } },
+        { "type": "stat", "settings": { "value": "4.9 / 5",  "label": "Google Rating" } },
+        { "type": "stat", "settings": { "value": "AUS",      "label": "Ships Nationwide" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

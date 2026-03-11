@@ -1,0 +1,29 @@
+{% comment %}
+  Section: marquee-divider
+  A subtle scrolling text strip used as a visual separator.
+{% endcomment %}
+
+<div class="marquee-divider">
+  <div class="ticker-track ticker-track--slow marquee-divider__text" aria-hidden="true">
+    {%- assign msg = section.settings.message | default: 'Bathroom  ·  Kitchen  ·  Laundry  ·  Matte Black  ·  Brushed Brass  ·  Brushed Nickel  ·  Chrome  ·  Premium Tapware  ·  Free Shipping  ·  ' -%}
+    {%- for i in (1..8) -%}{{ msg }}{%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Marquee Divider",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Marquee text",
+      "default": "Bathroom  ·  Kitchen  ·  Laundry  ·  Matte Black  ·  Brushed Brass  ·  Brushed Nickel  ·  Chrome  ·  Premium Tapware  ·  Free Shipping  ·  "
+    }
+  ],
+  "presets": [
+    { "name": "Marquee Divider" }
+  ]
+}
+{% endschema %}

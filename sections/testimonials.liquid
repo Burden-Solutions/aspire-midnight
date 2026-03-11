@@ -1,0 +1,75 @@
+{% comment %}
+  Section: testimonials
+  Three-column review grid. Each review is a block.
+{% endcomment %}
+
+<section class="testimonials-section">
+  <div class="section-header">
+    <div class="section-eyebrow">{{ section.settings.eyebrow | default: 'Reviews' }}</div>
+    <h2 class="pf section-title">
+      {{ section.settings.title_main | default: "What They're" }}
+      <em>{{ section.settings.title_italic | default: 'Saying' }}</em>
+    </h2>
+  </div>
+
+  <div class="testimonials-grid">
+    {%- for block in section.blocks -%}
+      <div class="testimonial-card" {{ block.shopify_attributes }}>
+        {%- render 'stars', rating: 5, size: 16 -%}
+        <p class="testimonial-card__text">{{ block.settings.text }}</p>
+        <div class="testimonial-card__footer">
+          <div class="testimonial-card__name">{{ block.settings.name }}</div>
+          <div class="testimonial-card__loc">{{ block.settings.location }}</div>
+        </div>
+      </div>
+    {%- else -%}
+      {%- comment -%} Placeholder testimonials {%- endcomment -%}
+      {%- assign def_names = 'Sarah M.,James T.,Claire R.' | split: ',' -%}
+      {%- assign def_locs  = 'Sydney, NSW,Melbourne, VIC,Brisbane, QLD' | split: ',' -%}
+      {%- assign def_texts = 'Fitted our entire renovation through Aspire. The matte black range is stunning and quality is exceptional. Delivery was fast and stress-free.,Used Aspire for kitchen and both bathrooms. The brushed brass finishes look incredible — so many compliments. Highly recommend to anyone renovating!,The design team helped pick the perfect tapware. Incredible service and the products are exactly as described. Five stars all round.' | split: ',' -%}
+      {%- for i in (0..2) -%}
+        <div class="testimonial-card">
+          {%- render 'stars', rating: 5, size: 16 -%}
+          <p class="testimonial-card__text">{{ def_texts[i] }}</p>
+          <div class="testimonial-card__footer">
+            <div class="testimonial-card__name">{{ def_names[i] }}</div>
+            <div class="testimonial-card__loc">{{ def_locs[i] }}</div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow",      "label": "Eyebrow label",        "default": "Reviews" },
+    { "type": "text", "id": "title_main",   "label": "Title — main text",    "default": "What They're" },
+    { "type": "text", "id": "title_italic", "label": "Title — italic text",  "default": "Saying" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "text",     "label": "Review text",    "default": "Absolutely love the products!" },
+        { "type": "text",     "id": "name",     "label": "Customer name",  "default": "Sarah M." },
+        { "type": "text",     "id": "location", "label": "Location",       "default": "Sydney, NSW" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "review", "settings": { "name": "Sarah M.", "location": "Sydney, NSW",    "text": "Fitted our entire renovation through Aspire. The matte black range is stunning and quality is exceptional. Delivery was fast and stress-free." } },
+        { "type": "review", "settings": { "name": "James T.", "location": "Melbourne, VIC", "text": "Used Aspire for kitchen and both bathrooms. The brushed brass finishes look incredible — so many compliments. Highly recommend to anyone renovating!" } },
+        { "type": "review", "settings": { "name": "Claire R.","location": "Brisbane, QLD",  "text": "The design team helped pick the perfect tapware. Incredible service and the products are exactly as described. Five stars all round." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

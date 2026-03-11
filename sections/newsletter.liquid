@@ -1,0 +1,66 @@
+{% comment %}
+  Section: newsletter
+  Two-column email signup section using Shopify's native customer form.
+{% endcomment %}
+
+<div class="newsletter-section">
+  <div>
+    <div class="newsletter-section__eyebrow">
+      {{ section.settings.eyebrow | default: 'Stay in the loop' }}
+    </div>
+    <h2 class="pf newsletter-section__title">
+      {{ section.settings.title_main | default: 'Join the' }}
+      <em>{{ section.settings.title_italic | default: 'Aspire' }}</em>
+      {{ section.settings.title_suffix | default: 'club' }}
+    </h2>
+    <p class="newsletter-section__sub">
+      {{ section.settings.subheading | default: 'New arrivals, renovation inspiration, and exclusive member offers — delivered to your inbox.' }}
+    </p>
+  </div>
+
+  {%- form 'customer', class: 'newsletter-form' -%}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    <input
+      type="email"
+      name="contact[email]"
+      class="newsletter-form__input"
+      placeholder="{{ section.settings.placeholder | default: 'Enter your email address' }}"
+      autocomplete="email"
+      required
+    >
+    <button type="submit" class="btn btn--primary btn--block">
+      {{ section.settings.btn_label | default: 'Subscribe' }}
+    </button>
+
+    {%- if form.posted_successfully? -%}
+      <p style="color:var(--orange);font-size:13px;margin-top:8px;">
+        {{ section.settings.success_msg | default: 'Thanks for subscribing!' }}
+      </p>
+    {%- endif -%}
+    {%- if form.errors -%}
+      <p style="color:#e04f00;font-size:13px;margin-top:8px;">
+        {{ form.errors | default_errors }}
+      </p>
+    {%- endif -%}
+  {%- endform -%}
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "div",
+  "settings": [
+    { "type": "text",     "id": "eyebrow",      "label": "Eyebrow label",     "default": "Stay in the loop" },
+    { "type": "text",     "id": "title_main",   "label": "Title — main",      "default": "Join the" },
+    { "type": "text",     "id": "title_italic", "label": "Title — italic",    "default": "Aspire" },
+    { "type": "text",     "id": "title_suffix", "label": "Title — suffix",    "default": "club" },
+    { "type": "textarea", "id": "subheading",   "label": "Subheading",        "default": "New arrivals, renovation inspiration, and exclusive member offers — delivered to your inbox." },
+    { "type": "text",     "id": "placeholder",  "label": "Input placeholder", "default": "Enter your email address" },
+    { "type": "text",     "id": "btn_label",    "label": "Button text",       "default": "Subscribe" },
+    { "type": "text",     "id": "success_msg",  "label": "Success message",   "default": "Thanks for subscribing!" }
+  ],
+  "presets": [
+    { "name": "Newsletter" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,33 @@
+{% comment %}
+  Section: announcement-bar
+  A scrolling ticker strip at the top of the page.
+{% endcomment %}
+
+<div class="announcement-bar">
+  <div
+    class="ticker-track announcement-bar__text"
+    aria-label="{{ section.settings.message }}"
+  >
+    {%- assign msg = section.settings.message | default: 'Free Shipping on orders over $1,000  ·  Premium Tapware  ·  Bathroom  ·  Kitchen  ·  Laundry  ·  Australian Owned  ·  ' -%}
+    {%- for i in (1..8) -%}{{ msg }}{%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "tag": "div",
+  "class": "announcement-bar-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Ticker message",
+      "default": "Free Shipping on orders over $1,000  ·  Premium Tapware  ·  Bathroom  ·  Kitchen  ·  Laundry  ·  Australian Owned  ·  "
+    }
+  ],
+  "presets": [
+    { "name": "Announcement Bar" }
+  ]
+}
+{% endschema %}
