@@ -1,0 +1,383 @@
+{% comment %}
+  Section: contact-form
+  Two-column layout: contact info blocks on the left, Shopify native contact form on the right.
+{% endcomment %}
+
+<section class="contact-section">
+
+  {%- comment -%} Left column — info blocks {%- endcomment -%}
+  <div class="contact-info">
+    <div class="section-eyebrow">{{ section.settings.info_eyebrow | default: 'Contact Details' }}</div>
+    <h2 class="pf contact-info__title">
+      {{ section.settings.info_title | default: 'Talk to Our' }}<br>
+      <em>{{ section.settings.info_title_italic | default: 'Team' }}</em>
+    </h2>
+    <p class="contact-info__desc">
+      {{ section.settings.info_desc | default: 'Our specialists are available to help with product selection, trade enquiries, and order support.' }}
+    </p>
+
+    <div class="contact-info__blocks">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'info' -%}
+          <div class="contact-info__item" {{ block.shopify_attributes }}>
+            <div class="contact-info__icon" aria-hidden="true">
+              {%- case block.settings.icon -%}
+                {%- when 'email' -%}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                {%- when 'phone' -%}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.61 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.59a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                {%- when 'clock' -%}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                {%- when 'location' -%}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                {%- else -%}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+              {%- endcase -%}
+            </div>
+            <div>
+              <div class="contact-info__label">{{ block.settings.label }}</div>
+              <div class="contact-info__value">{{ block.settings.value }}</div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_response_note -%}
+      <div class="contact-info__note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        {{ section.settings.response_note | default: 'We typically respond within 1 business day.' }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Right column — form {%- endcomment -%}
+  <div class="contact-form-col">
+    <div class="contact-form-box">
+      <div class="contact-form-box__header">
+        <div class="section-eyebrow">{{ section.settings.form_eyebrow | default: 'Send a Message' }}</div>
+      </div>
+
+      {%- form 'contact', class: 'contact-form' -%}
+
+        {%- if form.posted_successfully? -%}
+          <div class="contact-form__success">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <p>{{ section.settings.success_msg | default: "Thanks for reaching out — we'll be in touch shortly." }}</p>
+          </div>
+        {%- endif -%}
+
+        <div class="contact-form__row">
+          <div class="contact-form__field">
+            <label class="contact-form__label" for="ContactName">
+              {{ section.settings.label_name | default: 'Full Name' }}
+            </label>
+            <input
+              class="contact-form__input"
+              type="text"
+              id="ContactName"
+              name="contact[name]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              placeholder="{{ section.settings.placeholder_name | default: 'Your full name' }}"
+              autocomplete="name"
+            >
+          </div>
+          <div class="contact-form__field">
+            <label class="contact-form__label" for="ContactEmail">
+              {{ section.settings.label_email | default: 'Email Address' }} <span class="contact-form__required">*</span>
+            </label>
+            <input
+              class="contact-form__input"
+              type="email"
+              id="ContactEmail"
+              name="contact[email]"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              placeholder="{{ section.settings.placeholder_email | default: 'your@email.com' }}"
+              autocomplete="email"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="ContactPhone">
+            {{ section.settings.label_phone | default: 'Phone Number' }}
+          </label>
+          <input
+            class="contact-form__input"
+            type="tel"
+            id="ContactPhone"
+            name="contact[phone]"
+            value="{% if form.phone %}{{ form.phone }}{% endif %}"
+            placeholder="{{ section.settings.placeholder_phone | default: '+61 4XX XXX XXX' }}"
+            autocomplete="tel"
+          >
+        </div>
+
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="ContactSubject">
+            {{ section.settings.label_subject | default: 'Enquiry Type' }}
+          </label>
+          <select class="contact-form__input contact-form__select" id="ContactSubject" name="contact[subject]">
+            {%- assign subjects = section.settings.subjects | default: 'Product Question,Order Support,Trade Enquiry,Returns & Warranty,General Feedback' -%}
+            {%- assign subject_list = subjects | split: ',' -%}
+            <option value="" disabled selected>{{ section.settings.subject_placeholder | default: 'Select an option…' }}</option>
+            {%- for subject in subject_list -%}
+              <option value="{{ subject | strip }}">{{ subject | strip }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="ContactMessage">
+            {{ section.settings.label_message | default: 'Message' }} <span class="contact-form__required">*</span>
+          </label>
+          <textarea
+            class="contact-form__input contact-form__textarea"
+            id="ContactMessage"
+            name="contact[body]"
+            placeholder="{{ section.settings.placeholder_message | default: 'Tell us how we can help…' }}"
+            rows="6"
+            required
+          >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+        </div>
+
+        {%- if form.errors -%}
+          <div class="contact-form__errors">
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <button type="submit" class="btn btn--primary btn--block contact-form__submit">
+          {{ section.settings.btn_label | default: 'Send Message' }}
+        </button>
+
+      {%- endform -%}
+    </div>
+  </div>
+
+</section>
+
+<style>
+.contact-section {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 2px;
+  background: var(--border);
+  min-height: 70vh;
+}
+.contact-info {
+  background: var(--bg2);
+  padding: 72px 56px;
+}
+.contact-info__title {
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: var(--white);
+  margin: 16px 0 20px;
+}
+.contact-info__title em { font-style: italic; font-weight: 400; color: var(--w40); }
+.contact-info__desc {
+  color: var(--w60);
+  font-size: 14px;
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 48px;
+  max-width: 340px;
+}
+.contact-info__blocks { display: flex; flex-direction: column; gap: 28px; margin-bottom: 40px; }
+.contact-info__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+.contact-info__icon {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.contact-info__label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--w40);
+  margin-bottom: 5px;
+}
+.contact-info__value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white);
+  line-height: 1.5;
+}
+.contact-info__note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--w40);
+  font-weight: 300;
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+}
+
+/* Form column */
+.contact-form-col {
+  background: var(--bg);
+  padding: 72px 60px;
+}
+.contact-form-box__header { margin-bottom: 36px; }
+.contact-form { display: flex; flex-direction: column; gap: 20px; }
+.contact-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.contact-form__field { display: flex; flex-direction: column; gap: 8px; }
+.contact-form__label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--w60);
+}
+.contact-form__required { color: var(--orange); }
+.contact-form__input {
+  background: #1d1b18;
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 14px 18px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.contact-form__input::placeholder { color: var(--w40); }
+.contact-form__input:focus { border-color: var(--orange); }
+.contact-form__select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7774' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+}
+.contact-form__select option { background: #1d1b18; color: var(--white); }
+.contact-form__textarea { resize: vertical; min-height: 140px; line-height: 1.7; }
+.contact-form__submit { margin-top: 8px; padding: 18px; font-size: 12px; letter-spacing: 0.15em; }
+.contact-form__errors {
+  color: #e04f00;
+  font-size: 13px;
+  padding: 12px 16px;
+  border: 1px solid #e04f00;
+  border-left: 3px solid #e04f00;
+}
+.contact-form__success {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 92, 0, 0.08);
+  border: 1px solid var(--orange);
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--white);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .contact-info { padding: 48px 36px; }
+  .contact-form-col { padding: 48px 36px; }
+}
+@media (max-width: 768px) {
+  .contact-section { grid-template-columns: 1fr; }
+  .contact-form__row { grid-template-columns: 1fr; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "tag": "div",
+  "settings": [
+    { "type": "header",   "content": "Info column" },
+    { "type": "text",     "id": "info_eyebrow",          "label": "Eyebrow",            "default": "Contact Details" },
+    { "type": "text",     "id": "info_title",            "label": "Title",              "default": "Talk to Our" },
+    { "type": "text",     "id": "info_title_italic",     "label": "Title — italic",     "default": "Team" },
+    { "type": "textarea", "id": "info_desc",             "label": "Description",        "default": "Our specialists are available to help with product selection, trade enquiries, and order support." },
+    { "type": "checkbox", "id": "show_response_note",    "label": "Show response note", "default": true },
+    { "type": "text",     "id": "response_note",         "label": "Response note",      "default": "We typically respond within 1 business day." },
+    { "type": "header",   "content": "Form" },
+    { "type": "text",     "id": "form_eyebrow",          "label": "Form eyebrow",       "default": "Send a Message" },
+    { "type": "text",     "id": "label_name",            "label": "Name label",         "default": "Full Name" },
+    { "type": "text",     "id": "placeholder_name",      "label": "Name placeholder",   "default": "Your full name" },
+    { "type": "text",     "id": "label_email",           "label": "Email label",        "default": "Email Address" },
+    { "type": "text",     "id": "placeholder_email",     "label": "Email placeholder",  "default": "your@email.com" },
+    { "type": "text",     "id": "label_phone",           "label": "Phone label",        "default": "Phone Number" },
+    { "type": "text",     "id": "placeholder_phone",     "label": "Phone placeholder",  "default": "+61 4XX XXX XXX" },
+    { "type": "text",     "id": "label_subject",         "label": "Subject label",      "default": "Enquiry Type" },
+    { "type": "text",     "id": "subject_placeholder",   "label": "Subject placeholder","default": "Select an option…" },
+    { "type": "textarea", "id": "subjects",              "label": "Dropdown options (comma-separated)", "default": "Product Question,Order Support,Trade Enquiry,Returns & Warranty,General Feedback" },
+    { "type": "text",     "id": "label_message",         "label": "Message label",      "default": "Message" },
+    { "type": "text",     "id": "placeholder_message",   "label": "Message placeholder","default": "Tell us how we can help…" },
+    { "type": "text",     "id": "btn_label",             "label": "Button text",        "default": "Send Message" },
+    { "type": "text",     "id": "success_msg",           "label": "Success message",    "default": "Thanks for reaching out — we'll be in touch shortly." }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Info item",
+      "settings": [
+        { "type": "text",   "id": "label", "label": "Label", "default": "Email" },
+        { "type": "text",   "id": "value", "label": "Value", "default": "hello@aspire.com.au" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "email",
+          "options": [
+            { "value": "email",    "label": "Email" },
+            { "value": "phone",    "label": "Phone" },
+            { "value": "clock",    "label": "Clock / Hours" },
+            { "value": "location", "label": "Location" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form",
+      "blocks": [
+        { "type": "info", "settings": { "label": "Email",  "value": "hello@aspire.com.au",         "icon": "email"    } },
+        { "type": "info", "settings": { "label": "Phone",  "value": "+61 2 9000 0000",             "icon": "phone"    } },
+        { "type": "info", "settings": { "label": "Hours",  "value": "Mon – Fri, 8am – 6pm AEST",  "icon": "clock"    } }
+      ]
+    }
+  ]
+}
+{% endschema %}

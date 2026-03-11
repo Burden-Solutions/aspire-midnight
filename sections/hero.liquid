@@ -19,7 +19,7 @@
       </h1>
 
       <p class="hero__sub fu fu3">
-        {{ section.settings.subheading | default: 'Premium tapware for bathrooms, kitchens, and laundries. Curated for quality. Backed by Australia\'s best service.' }}
+        {{ section.settings.subheading | default: "Premium tapware for bathrooms, kitchens, and laundries. Curated for quality. Backed by Australia's best service." }}
       </p>
 
       <div class="hero__cta fu fu4">
@@ -50,11 +50,7 @@
   {%- comment -%} Right: image panel {%- endcomment -%}
   <div class="hero__media">
     {%- if section.settings.image != blank -%}
-      {{ section.settings.image | image_url: width: 1200 | image_tag:
-           class: 'hero__media-inner',
-           alt: section.settings.image.alt | default: section.settings.badge_name,
-           loading: 'eager',
-           fetchpriority: 'high' }}
+      {{ section.settings.image | image_url: width: 1200 | image_tag: class: 'hero__media-inner', alt: section.settings.image.alt | default: section.settings.badge_name, loading: 'eager', fetchpriority: 'high' }}
     {%- else -%}
       <div class="img-placeholder hero__media-inner" style="min-height:480px">
         {{ 'hero-apparel-1' | placeholder_svg_tag: 'img-placeholder' }}

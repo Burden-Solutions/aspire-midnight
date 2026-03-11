@@ -28,7 +28,8 @@
         {%- endif -%}
         {%- comment -%} Fallback placeholders in editor {%- endcomment -%}
         {%- if section.settings.instagram_url == blank and section.settings.facebook_url == blank -%}
-          {%- for handle in 'IG,PI,FB,YT' | split: ',' -%}
+          {%- assign social_handles = 'IG,PI,FB,YT' | split: ',' -%}
+          {%- for handle in social_handles -%}
             <a href="#" class="footer-social__link" aria-label="{{ handle }}">{{ handle }}</a>
           {%- endfor -%}
         {%- endif -%}

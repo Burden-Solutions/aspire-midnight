@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "product-main": {
+      "type": "product-main",
+      "settings": {}
+    },
+    "product-details": {
+      "type": "product-details",
+      "blocks": {
+        "tab-1": { "type": "tab", "settings": { "heading": "Description",   "content": "<p>Premium quality tapware engineered for lasting performance. Each piece is crafted to the highest standard and backed by our comprehensive warranty.</p>" } },
+"tab-2": { "type": "tab", "settings": { "heading": "Specifications", "content": "<p>Material: Brass body with chrome plating. Finish: Available in Matte Black, Brushed Brass, Brushed Nickel, and Chrome. Warranty: 10-year manufacturer warranty.</p>" } },
+"tab-3": { "type": "tab", "settings": { "heading": "Delivery",       "content": "<p>Free shipping on orders over $1,000. Standard delivery 3–7 business days. Express available at checkout. Ships Australia-wide.</p>" } }
+      },
+      "block_order": ["tab-1", "tab-2", "tab-3"],
+      "settings": {}
+    },
+    "marquee-divider": {
+      "type": "marquee-divider",
+      "settings": {}
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "You May Also Like",
+        "title_line1": "Related",
+        "title_line2": "Products"
+      }
+    }
+  },
+  "order": ["product-main", "product-details", "marquee-divider", "featured-products"]
+}

@@ -1,0 +1,85 @@
+{% comment %}
+  Section: contact-hero
+  Page header for the Contact Us page, styled to match the site hero.
+{% endcomment %}
+
+<section class="contact-hero">
+  <div class="contact-hero__inner">
+    <div class="contact-hero__eyebrow">
+      <span class="contact-hero__eyebrow-label">{{ section.settings.eyebrow | default: 'Get in Touch' }}</span>
+      <span class="contact-hero__eyebrow-line" aria-hidden="true"></span>
+    </div>
+    <h1 class="pf contact-hero__heading">
+      <span class="contact-hero__line1">{{ section.settings.heading_line1 | default: "WE\'D LOVE" }}</span>
+      <span class="contact-hero__line2">{{ section.settings.heading_line2 | default: "TO" }}</span>
+      <span class="contact-hero__line3">{{ section.settings.heading_line3 | default: "HEAR FROM YOU." }}</span>
+    </h1>
+    <p class="contact-hero__sub">
+      {{ section.settings.subheading | default: 'Whether you have a question about a product, need help with your order, or want to talk through your renovation — our team is here to help.' }}
+    </p>
+  </div>
+</section>
+
+<style>
+.contact-hero {
+  padding: 100px 60px 80px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.contact-hero__inner { max-width: 720px; }
+.contact-hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+.contact-hero__eyebrow-label {
+  color: var(--orange);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.contact-hero__eyebrow-line {
+  height: 1px;
+  width: 50px;
+  background: var(--orange);
+  opacity: 0.5;
+}
+.contact-hero__heading {
+  line-height: 0.92;
+  font-weight: 900;
+  margin: 0 0 36px;
+}
+.contact-hero__line1 { display: block; font-size: clamp(52px, 7vw, 96px); color: var(--white); }
+.contact-hero__line2 { display: block; font-size: clamp(52px, 7vw, 96px); color: var(--w20); margin-top: -2px; }
+.contact-hero__line3 { display: block; font-size: clamp(52px, 7vw, 96px); color: var(--orange); font-style: italic; margin-top: -2px; }
+.contact-hero__sub {
+  color: var(--w60);
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 480px;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .contact-hero { padding: 64px 32px 48px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Contact Hero",
+  "tag": "div",
+  "settings": [
+    { "type": "text",     "id": "eyebrow",       "label": "Eyebrow label",   "default": "Get in Touch" },
+    { "type": "text",     "id": "heading_line1", "label": "Heading — line 1","default": "WE'D LOVE" },
+    { "type": "text",     "id": "heading_line2", "label": "Heading — line 2","default": "TO" },
+    { "type": "text",     "id": "heading_line3", "label": "Heading — line 3","default": "HEAR FROM YOU." },
+    { "type": "textarea", "id": "subheading",    "label": "Subheading",      "default": "Whether you have a question about a product, need help with your order, or want to talk through your renovation — our team is here to help." }
+  ],
+  "presets": [
+    { "name": "Contact Hero" }
+  ]
+}
+{% endschema %}

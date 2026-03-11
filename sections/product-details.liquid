@@ -1,0 +1,151 @@
+{% comment %}
+  Section: product-details
+  Tabbed content area below the product main — description, specs, delivery, etc.
+  Each tab is a Theme Editor block.
+{% endcomment %}
+
+<div class="product-details">
+  {%- comment -%} Tab nav {%- endcomment -%}
+  <div class="product-details__nav" role="tablist">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'tab' -%}
+        <button
+          class="product-details__tab{% if forloop.first %} product-details__tab--active{% endif %}"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="ProductTab-{{ forloop.index }}"
+          id="ProductTabBtn-{{ forloop.index }}"
+          data-tab="{{ forloop.index }}"
+          {{ block.shopify_attributes }}
+        >
+          {{ block.settings.heading }}
+        </button>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Tab panels {%- endcomment -%}
+  <div class="product-details__panels">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'tab' -%}
+        <div
+          class="product-details__panel{% if forloop.first %} product-details__panel--active{% endif %}"
+          role="tabpanel"
+          id="ProductTab-{{ forloop.index }}"
+          aria-labelledby="ProductTabBtn-{{ forloop.index }}"
+        >
+          <div class="product-details__panel-inner rte">
+            {{ block.settings.content }}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+<style>
+.product-details {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.product-details__nav {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding: 0 60px;
+  overflow-x: auto;
+}
+.product-details__tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--w40);
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 22px 24px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  margin-bottom: -1px;
+}
+.product-details__tab:hover { color: var(--white); }
+.product-details__tab--active { color: var(--orange); border-bottom-color: var(--orange); }
+
+.product-details__panels { padding: 48px 60px; }
+.product-details__panel { display: none; }
+.product-details__panel--active { display: block; }
+.product-details__panel-inner {
+  color: var(--w60);
+  font-size: 14px;
+  line-height: 1.9;
+  font-weight: 300;
+  max-width: 720px;
+}
+.product-details__panel-inner p { margin-bottom: 16px; }
+.product-details__panel-inner p:last-child { margin-bottom: 0; }
+.product-details__panel-inner ul, .product-details__panel-inner ol {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+.product-details__panel-inner li { margin-bottom: 6px; }
+.product-details__panel-inner strong { color: var(--white); font-weight: 600; }
+
+@media (max-width: 768px) {
+  .product-details__nav { padding: 0 32px; }
+  .product-details__panels { padding: 36px 32px; }
+}
+</style>
+
+<script>
+(function () {
+  var tabs   = document.querySelectorAll('.product-details__tab');
+  var panels = document.querySelectorAll('.product-details__panel');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var idx = tab.dataset.tab;
+
+      tabs.forEach(function (t) {
+        t.classList.remove('product-details__tab--active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(function (p) { p.classList.remove('product-details__panel--active'); });
+
+      tab.classList.add('product-details__tab--active');
+      tab.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById('ProductTab-' + idx);
+      if (panel) panel.classList.add('product-details__panel--active');
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Product Details Tabs",
+  "tag": "div",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text",     "id": "heading", "label": "Tab heading", "default": "Description" },
+        { "type": "richtext", "id": "content", "label": "Tab content", "default": "<p>Add your content here.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Details Tabs",
+      "blocks": [
+        { "type": "tab", "settings": { "heading": "Description",    "content": "<p>Premium quality tapware engineered for lasting performance.</p>" } },
+        { "type": "tab", "settings": { "heading": "Specifications", "content": "<p>Material: Brass body. Available in multiple finishes. 10-year warranty.</p>" } },
+        { "type": "tab", "settings": { "heading": "Delivery",       "content": "<p>Free shipping on orders over $1,000. Ships Australia-wide.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

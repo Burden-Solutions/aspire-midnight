@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "contact-hero": {
+      "type": "contact-hero",
+      "settings": {}
+    },
+    "contact-form": {
+      "type": "contact-form",
+      "blocks": {
+        "info-1": { "type": "info", "settings": { "label": "Email", "value": "hello@aspire.com.au", "icon": "email" } },
+        "info-2": { "type": "info", "settings": { "label": "Phone", "value": "+61 2 9000 0000", "icon": "phone" } },
+        "info-3": { "type": "info", "settings": { "label": "Hours", "value": "Mon – Fri, 8am – 6pm AEST", "icon": "clock" } }
+      },
+      "block_order": ["info-1", "info-2", "info-3"],
+      "settings": {}
+    }
+  },
+  "order": ["contact-hero", "contact-form"]
+}
